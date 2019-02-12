@@ -11,7 +11,7 @@ h1{
 }
 
 .cardtray{
-    background: #33cc33;
+    background: #5cb85c;
     border-radius:25px;
     padding: 20px;
     margin: 10px;
@@ -29,4 +29,9 @@ input{
     padding: 5px;
     width: 100px;
     text-align:center;
+}
+.card-table {
+    background: url(../static/bj2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }

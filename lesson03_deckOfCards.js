@@ -179,6 +179,7 @@ const draw = function () {
 const showDealer = function () {
     let dealer = document.getElementById('bjDealer');
     let elem = document.getElementById('faceDown');
+    document.getElementById('deal').disabled = 'true';
 
     elem.parentNode.removeChild(elem);
 
@@ -249,15 +250,29 @@ const borrowCash = function () {
 
 const deal = function () {
     if (parseInt(document.getElementById('wager').value) > 0){
+
+        //
+        document.getElementById('faceDown').style.visibility='visible';
+        let node = document.getElementById('placeHolder');
+        if (node.parentNode){
+            node.parentNode.removeChild(node);
+        }
+
         cards.dealerStart();
 
+        document.getElementById('draw').disabled = false;
+        document.getElementById('stay').disabled = false;
+        document.getElementById('reDeal').disabled = false;
 
+        let nodes = document.getElementById('wagerGroup').getElementsByTagName('button');
+        for(let n of nodes){
+            n.disabled='true';
+        }
     }
+
     else{
         alert("You must make a wager!");
     }
-
-
 
 }
 
@@ -276,8 +291,10 @@ const makeBet = function (amount) {
     else{
         bet=100;
     }
-
     wager.value = bet;
+
+    document.getElementById('')
+    document.getElementById('deal').disabled = false;
 
 
 

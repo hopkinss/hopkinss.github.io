@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="static/bootstrap-3.3.7-dist/css/bootstrap-theme.css">
     <link rel="stylesheet" href="static/Styles.css">
 </head>
-<body style="margin-left: 10px;margin: 25px;" background="static/felt.jpg">
+<body  class="card-table" >
 <div  id="blackJackDiv" class="playingCards faceImages row align-items-center" >
 
 
@@ -23,8 +23,8 @@
         <div class="col-lg-2">
 
         </div>
-        <div class="col-lg-10">
-            <h1>Black Jack</h1>
+        <div class="col-lg-10" style="text-align: center;">
+            <h1 style="font-weight: bolder;font-variant: all-petite-caps;font-style: oblique;">Black Jack</h1>
             <div id="bjDealer" class="row cardtray">
                 <!--Face down card-->
                 <div id ='faceDown' class="card back" style="visibility: hidden;">*</div>
@@ -35,6 +35,7 @@
             <div class="row">
                 <label for="dealerTotal">Dealer</label>
                 <input type="number" id="dealerTotal" value="0">
+                <span id="status" class="message"></span>
             </div>
 
 
@@ -47,18 +48,23 @@
             </div>
 
             <div class="row">
-                <label for="userTotal">User</label>
-                <input type="number" id="userTotal" value="0">
-                <span id="status" class="message"></span>
+                <div class="col-xs-6">
+                    <label for="userTotal">User</label>
+                    <input type="number" id="userTotal" value="0">
+                </div>
+                <div class="col-xs-6">
+                    <div style="margin: 10px;" class="btn-group">
+                        <button class="btn btn-success" style="margin-right: 5px;" disabled="true"  id = "deal">Deal</button>
+                        <button class="btn btn-success" style="margin-right: 5px;" disabled="true" id = "draw">Hit</button>
+                        <button class="btn btn-danger"  style="margin-right: 5px;" disabled="true" id = "stay">Stay</button>
+                        <button class="btn btn-success" style="visibility: hidden;" id = "reDeal"><i class="fa fa-repeat"></i></button>
+                        <button class="btn btn-success" style="visibility: hidden;" id = "borrow">$ell pla$sma</button>
+                    </div>
+                </div>
+
             </div>
 
-            <div style="margin: 10px;" class="btn-group">
-                <button class="btn btn-primary" style="margin-right: 5px;"  id = "deal">Deal</button>
-                <button class="btn btn-success" style="margin-right: 5px;visibility: hidden"  id = "draw">Hit</button>
-                <button class="btn btn-danger"  style="margin-right: 5px;visibility: hidden;"  id = "stay">Stay</button>
-                <button class="btn btn-primary" style="visibility: hidden;" id = "reDeal">Deal</button>
-                <button class="btn btn-primary" style="visibility: hidden;" id = "borrow">Borrow Cash</button>
-            </div>
+
             <div class="row">
                 <div class="col-md-1">
                     <label for="bank">Cash</label>
@@ -69,12 +75,14 @@
                 <div class="col-md-1">
                     <label for="wager">Wager</label>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <input type="number" id="wager" step="100" value="0" readonly="true">
                 </div>
-                <div class="col-md-4 btn-group" >
+
+                <div class="col-md-4 btn-group" id="wagerGroup"  >
                     <button class="btn btn-success" id="bet100">100</button><button class="btn btn-success" id="betHalf" >half</button><button class="btn btn-success" id="betAll">all</button>
                 </div>
+
 
             </div>
 
