@@ -240,9 +240,15 @@ const updateBank = function (status) {
 
 const borrowCash = function () {
     document.getElementById('borrow').style.visibility='hidden';
-    document.getElementById('draw').disabled = false;
-    document.getElementById('stay').disabled = false;
-    document.getElementById('reDeal').disabled = false;
+
+    document.getElementById('deal').disabled = true;
+    document.getElementById('stay').disabled = true;
+    document.getElementById('reDeal').disabled = true;
+
+    let nodes = document.getElementById('wagerGroup').getElementsByTagName('button');
+    for(let n of nodes){
+        n.disabled='true';
+    }
 
     sessionStorage.setItem("userBank", '1000');
     document.getElementById('bank').value = parseInt(sessionStorage.getItem('userBank'));

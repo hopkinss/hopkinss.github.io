@@ -24,7 +24,10 @@
 
         </div>
         <div class="col-lg-10" style="text-align: center;">
-            <h1 style="font-weight: bolder;font-variant: all-petite-caps;font-style: oblique;">Black Jack</h1>
+
+            <div class="row">
+                <span id="status" class="message"></span>
+            </div>
             <div id="bjDealer" class="row cardtray">
                 <!--Face down card-->
                 <div id ='faceDown' class="card back" style="visibility: hidden;">*</div>
@@ -32,13 +35,6 @@
                 </div>
 
             </div>
-            <div class="row">
-                <label for="dealerTotal">Dealer</label>
-                <input type="number" id="dealerTotal" value="0">
-                <span id="status" class="message"></span>
-            </div>
-
-
             <div id="bjCards" class="row cardtray">
 
                 <div id ='placeHolder' class="card back" style="visibility: hidden;">*</div>
@@ -48,11 +44,17 @@
             </div>
 
             <div class="row">
-                <div class="col-xs-6">
-                    <label for="userTotal">User</label>
-                    <input type="number" id="userTotal" value="0">
+                <div class="col-xs-3">
+                    <div class="col-xs-5">
+                        <label for="dealerTotal">Dealer</label>
+                        <label for="userTotal">Player</label>
+                    </div>
+                    <div class="col-xs-2">
+                        <input type="number" id="dealerTotal" value="0">
+                        <input type="number" id="userTotal" value="0">
+                    </div>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-7">
                     <div style="margin: 10px;" class="btn-group">
                         <button class="btn btn-success" style="margin-right: 5px;" disabled="true"  id = "deal">Deal</button>
                         <button class="btn btn-success" style="margin-right: 5px;" disabled="true" id = "draw">Hit</button>
@@ -65,11 +67,11 @@
             </div>
 
 
-            <div class="row">
-                <div class="col-md-1">
+            <div class="row" style="border:1px solid white;margin: 20px;padding: 5px;border-radius:25px;background-color: #2aabd2;">
+                <div class="col-xs-1">
                     <label for="bank">Cash</label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-xs-3">
                     <input type="number" id="bank" value="0" readonly="true">
                 </div>
                 <div class="col-md-1">
