@@ -243,8 +243,8 @@ const borrowCash = function () {
 
     document.getElementById('deal').disabled = true;
     document.getElementById('stay').disabled = true;
-    document.getElementById('reDeal').disabled = true;
-
+    // document.getElementById('reDeal').style.visibility='visible';
+    //
     let nodes = document.getElementById('wagerGroup').getElementsByTagName('button');
     for(let n of nodes){
         n.disabled='true';
@@ -252,6 +252,8 @@ const borrowCash = function () {
 
     sessionStorage.setItem("userBank", '1000');
     document.getElementById('bank').value = parseInt(sessionStorage.getItem('userBank'));
+
+    dealAgain();
 }
 
 const deal = function () {
