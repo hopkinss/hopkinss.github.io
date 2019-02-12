@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="static/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="static/selfthinker-CSS-Playing-Cards-7e0e0f2/cards.css" media="screen">
+    <script src="static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="static/bootstrap-3.3.7-dist/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="static/Styles.css">
+</head>
+<body style="margin-left: 10px;margin: 25px;" background="static/felt.jpg">
+<div  id="blackJackDiv" class="playingCards faceImages row align-items-center" >
+
+
+    <div class="container-fluid">
+        <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-10">
+            <h1>Black Jack</h1>
+            <div id="bjDealer" class="row cardtray">
+                <!--Face down card-->
+                <div id ='faceDown' class="card back" style="visibility: hidden;">*</div>
+                    <div class="clear">
+                </div>
+
+            </div>
+            <div class="row">
+                <label for="dealerTotal">Dealer</label>
+                <input type="number" id="dealerTotal" value="0">
+            </div>
+
+
+            <div id="bjCards" class="row cardtray">
+
+                <div id ='placeHolder' class="card back" style="visibility: hidden;">*</div>
+                <div class="clear">
+                </div>
+
+            </div>
+
+            <div class="row">
+                <label for="userTotal">User</label>
+                <input type="number" id="userTotal" value="0">
+                <span id="status" class="message"></span>
+            </div>
+
+            <div style="margin: 10px;" class="btn-group">
+                <button class="btn btn-primary" style="margin-right: 5px;"  id = "deal">Deal</button>
+                <button class="btn btn-success" style="margin-right: 5px;visibility: hidden"  id = "draw">Hit</button>
+                <button class="btn btn-danger"  style="margin-right: 5px;visibility: hidden;"  id = "stay">Stay</button>
+                <button class="btn btn-primary" style="visibility: hidden;" id = "reDeal">Deal</button>
+                <button class="btn btn-primary" style="visibility: hidden;" id = "borrow">Borrow Cash</button>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <label for="bank">Cash</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" id="bank" value="0" readonly="true">
+                </div>
+                <div class="col-md-1">
+                    <label for="wager">Wager</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" id="wager" step="100" value="0" readonly="true">
+                </div>
+                <div class="col-md-4 btn-group" >
+                    <button class="btn btn-success" id="bet100">100</button><button class="btn btn-success" id="betHalf" >half</button><button class="btn btn-success" id="betAll">all</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!--<div class="row">-->
+    <!--<div></div>-->
+    <!--<button id="deal">Deal All</button>-->
+    <!--<div  id="cards" class="playingCards inText">-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--Load script-->
+<script src="lesson03_deckOfCards.js"></script>
+</body>
+</html>
+
