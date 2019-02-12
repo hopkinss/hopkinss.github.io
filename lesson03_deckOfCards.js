@@ -269,6 +269,7 @@ const deal = function () {
         cards.dealerStart();
 
         document.getElementById('draw').disabled = false;
+        document.getElementById('deal').disabled = true;
         document.getElementById('stay').disabled = false;
         document.getElementById('reDeal').disabled = false;
 
