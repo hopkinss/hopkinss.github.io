@@ -34,4 +34,5 @@ input{
     background: url(../static/bj2.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: black;
 }
