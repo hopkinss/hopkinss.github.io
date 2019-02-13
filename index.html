@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="static/Styles.css">
 </head>
 <body  class="card-table" >
-<div  id="blackJackDiv" class="playingCards faceImages row align-items-center" >
+<div  id="blackJackDiv" class="playingCards simpleCards faceImages row align-items-center" >
 
 
     <div class="container-fluid">
@@ -33,11 +33,9 @@
 
             </div>
             <div id="bjCards" class="row cardtray">
-
                 <div id ='placeHolder' class="card back" style="visibility: hidden;">*</div>
                 <div class="clear">
                 </div>
-
             </div>
 
             <div class="row">
@@ -57,10 +55,9 @@
                         <button class="btn btn-success" style="margin-right: 5px;" disabled="true" id = "draw">Hit</button>
                         <button class="btn btn-danger"  style="margin-right: 5px;" disabled="true" id = "stay">Stay</button>
                         <button class="btn btn-success" style="visibility: hidden;" id = "reDeal"><i class="fa fa-repeat"></i></button>
-                        <button class="btn btn-success" style="visibility: hidden;" id = "borrow">$ell pla$sma</button>
+                        <button class="btn btn-success" style="visibility: hidden;" id = "borrow">$ell pla$ma</button>
                     </div>
                 </div>
-
             </div>
 
 
@@ -88,18 +85,10 @@
             <div style="color:white;font-size:xx-large;text-align:center;width:100%;">
                 <span id="status" class="message"></span>
             </div>
-
         </div>
     </div>
-
 </div>
 
-<!--<div class="row">-->
-    <!--<div></div>-->
-    <!--<button id="deal">Deal All</button>-->
-    <!--<div  id="cards" class="playingCards inText">-->
-    <!--</div>-->
-<!--</div>-->
 
 <!--Load script-->
 <script src="lesson03_deckOfCards.js"></script>

@@ -16,11 +16,6 @@ window.addEventListener('load',function(){
         makeBet(1);
     });
 
-    // Force wager to use mouse input
-    const mouseOnlyNumberInputField = document.getElementById("wager");
-    mouseOnlyNumberInputField.addEventListener("keypress", (event) => {
-        event.preventDefault();
-    });
 });
 
 const Card = function(cssClass,rank,suit,html){
@@ -55,6 +50,7 @@ const Cards = function () {
     // Set the users available bank
     document.getElementById('bank').value = parseInt( sessionStorage.getItem("userBank"));
 
+    // Requirements for exercise  - create a deck of cards
     const cards =['2','3','4','5','6','7','8','9','10','j','q','k','a'];
     const face = {'j':10,'q':10,'k':10,'a':11};
     const suits = ['diams','hearts','spades','clubs'];
@@ -67,22 +63,12 @@ const Cards = function () {
             card.rank = c;
             card.suit = s;
             card.value = isNaN(c) ?  face[c] : parseInt(c);
-
             this.deck.push(card);
         }
     }
 
-    // make a copy of the current deck
+    // make a copy of the current deck to prevent reselection
     this.currentDeck = [...this.deck];
-
-    // Deal the cards
-    this.dealAll = function () {
-        let hand=document.getElementById('cards');
-
-        for(let c of this.deck){
-            this.addCardToUI('cards',c);
-        }
-    }
 
     // Draw cards
     this.drawCard = function (target,total) {
@@ -105,19 +91,16 @@ const Cards = function () {
     // Initialize the game
     this.dealerStart = function () {
 
-        // Dealer cards
-        let pos = Math.floor(Math.random() * this.currentDeck.length - 1);
-        let card = this.currentDeck.splice(pos, 1)[0];
+        // Select a single card for the dealer
+        let card = this.getRandomCard();
         this.addCardToUI('bjDealer', card);
         document.getElementById('dealerTotal').value = card.value;
 
-
-        // User cards
+        // Deal 2 cards to the user
         document.getElementById('status').innerHTML="";
         let userTotal = 0;
         for(let i=0;i<2;i++) {
-            let upos = Math.floor(Math.random() * this.currentDeck.length - 1);
-            let ucard = this.currentDeck.splice(upos, 1)[0];
+            let ucard = this.getRandomCard();
             this.addCardToUI('bjCards', ucard);
             userTotal += ucard.value;
         }
@@ -125,6 +108,13 @@ const Cards = function () {
         checkValue('userTotal');
     }
 
+    // Select a random card
+    this.getRandomCard = function () {
+        let pos = Math.floor(Math.random() * this.currentDeck.length - 1);
+        return this.currentDeck.splice(pos, 1)[0];
+    }
+
+    // Add a card to the page
     this.addCardToUI = function (target,card) {
 
         let hand = document.getElementById(target);
@@ -144,7 +134,7 @@ const Cards = function () {
     }
 }
 
-//
+// Check the sum of the cards after deal
 const checkValue = function(target){
 
     let  draw = document.getElementById('draw');
@@ -175,7 +165,7 @@ const draw = function () {
     cards.drawCard('bjCards','userTotal');
 }
 
-//
+// Deal the house cards
 const showDealer = function () {
     let dealer = document.getElementById('bjDealer');
     let elem = document.getElementById('faceDown');
@@ -183,9 +173,11 @@ const showDealer = function () {
 
     elem.parentNode.removeChild(elem);
 
+    // Dealer hits at 16
     while (parseInt(document.getElementById('dealerTotal').value) < 16 ) {
         cards.drawCard('bjDealer', 'dealerTotal');
     }
+
     let  draw = document.getElementById('draw');
     let  stay = document.getElementById('stay');
     let  reDeal = document.getElementById('reDeal');
@@ -193,12 +185,25 @@ const showDealer = function () {
     stay.disabled=true;
     reDeal.style.visibility='visible';
 
-    let dealerTotal  =parseInt( document.getElementById('dealerTotal').value);
-    let playerTotal  = parseInt(document.getElementById('userTotal').value);
+    // when dealer is finished, call the outcome to see who wins
+    outcome(parseInt( document.getElementById('dealerTotal').value), parseInt(document.getElementById('userTotal').value));
+}
+
+// Identify the winner and call the updateBank method to update score
+const outcome = function (dealerTotal,playerTotal) {
 
     if (playerTotal > dealerTotal || dealerTotal > 21) {
-        document.getElementById('status').innerHTML = "You win";
-        updateBank('win');
+
+        // User has blackjack
+        if (isBlackjack()){
+            document.getElementById('status').innerHTML = "Blackjack pays double";
+            updateBank('bj');
+        }
+        // User just happened to win
+        else {
+            document.getElementById('status').innerHTML = "You win";
+            updateBank('win');
+        }
     }
     else if (playerTotal == dealerTotal){
         document.getElementById('status').innerHTML ="Push, fool";
@@ -208,6 +213,27 @@ const showDealer = function () {
         updateBank('lose');
     }
 }
+
+// See if user had blackjack
+const isBlackjack = function () {
+
+    let userCards = document.getElementById('bjCards').querySelectorAll('div.card');
+    if (userCards.length == 2) {
+
+        // Sort the users hand so numbers appear before face cards
+        let hand = [];
+        hand.push(userCards[0].getAttribute('class').split(' ')[1].split('-')[1].replace('a','z'));
+        hand.push(userCards[1].getAttribute('class').split(' ')[1].split('-')[1].replace('a','z'));
+        let playerHand = hand.sort().join('');
+
+        // regex to see if 10 and face card
+        return /[10jqk]z/.test(playerHand);
+    }
+    else {
+        return false;
+    }
+}
+
 // Restart the game
 const dealAgain = function () {
     location.reload();
@@ -222,6 +248,7 @@ const checkWager = function () {
     wager.max  = parseInt( bank.value);
 }
 
+// Update the user account
 const updateBank = function (status) {
 
     let bank = parseInt( sessionStorage.getItem("userBank"));
@@ -231,13 +258,20 @@ const updateBank = function (status) {
         let newval = (bank -  wager).toString();
         sessionStorage.setItem("userBank", newval);
     }
-    else {
+    else if (status == 'win') {
         let newval = (bank  +  wager).toString();
+        sessionStorage.setItem("userBank", newval);
+    }
+
+    else if (status == 'bj'){
+
+        let newval = (bank  +  (wager*2)).toString();
         sessionStorage.setItem("userBank", newval);
     }
     document.getElementById('bank').value = parseInt( sessionStorage.getItem('userBank'));
 }
 
+// If user account goes below 100, set user account back to 1000
 const borrowCash = function () {
     document.getElementById('borrow').style.visibility='hidden';
 
@@ -256,18 +290,18 @@ const borrowCash = function () {
     dealAgain();
 }
 
+// Start the game by dealing 1 card to dealer and 2 for player
 const deal = function () {
     if (parseInt(document.getElementById('wager').value) > 0){
 
-        //
+        // replace the facecard
         document.getElementById('faceDown').style.visibility='visible';
-        let node = document.getElementById('placeHolder');
-        if (node.parentNode){
-            node.parentNode.removeChild(node);
-        }
+            let node = document.getElementById('placeHolder');
+            if (node.parentNode){
+             node.parentNode.removeChild(node);
+            }
 
         cards.dealerStart();
-
         document.getElementById('draw').disabled = false;
         document.getElementById('deal').disabled = true;
         document.getElementById('stay').disabled = false;
@@ -278,13 +312,12 @@ const deal = function () {
             n.disabled='true';
         }
     }
-
     else{
         alert("You must make a wager!");
     }
-
 }
 
+// populate the wager
 const makeBet = function (amount) {
 
     let wager = document.getElementById('wager');
@@ -298,19 +331,20 @@ const makeBet = function (amount) {
         bet=maxVal;
     }
     else{
-        bet=100;
+        if (maxVal - parseInt(wager.value) >0) {
+            bet = parseInt(wager.value) + 100;
+        }
+        else {
+            bet=maxVal;
+        }
     }
     wager.value = bet;
 
     document.getElementById('')
     document.getElementById('deal').disabled = false;
-
-
-
-
 }
 
-
+// create a new instance of a deck of cards
 var cards = new Cards();
 
 
