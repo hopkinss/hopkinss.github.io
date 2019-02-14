@@ -31,8 +31,13 @@ window.addEventListener('load',function(){
  ==============================================================================*/
 const init = function () {
 
-    let user = prompt('Enter your user name: ','Player 1');
-    document.getElementById('playerName').innerHTML = user;
+    let id = sessionStorage.getItem("uid");
+    if (id === null) {
+        let uid= window.prompt('Enter your user name: ','Player1');
+        sessionStorage.setItem("uid",uid);
+    }
+
+    document.getElementById('playerName').innerHTML = sessionStorage.getItem("uid");
 
     setMessage('Make a wager to start the action');
     let bank = parseInt(createAccount());
