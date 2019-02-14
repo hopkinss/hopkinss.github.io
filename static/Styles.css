@@ -6,10 +6,6 @@ label{
     margin: 10px;
 }
 
-h1{
-    color:white;
-}
-
 .cardtray{
     background: transparent;
     border-radius:25px;
@@ -36,3 +32,16 @@ input{
     background-size: cover;
     background-color: black;
 }
+.buttonGroup{
+    border:1px solid white;
+    margin: 20px;
+    padding: 5px;
+    border-radius:25px;
+    background-color: #2aabd2;
+    align-content: center;
+}
+
+.soft{
+    border:3px solid yellow !important;
+}
+

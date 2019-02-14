@@ -1,3 +1,5 @@
+
+// Bind eventhandlers
 window.addEventListener('load',function(){
     document.getElementById('deal').addEventListener("click", deal);
     document.getElementById('draw').addEventListener('click',draw);
@@ -6,6 +8,7 @@ window.addEventListener('load',function(){
     document.getElementById('wager').addEventListener('input',checkWager);
     document.getElementById('borrow').addEventListener('click',borrowCash);
 
+    // Pass argument to eventhandler
     document.getElementById('bet100').addEventListener('click',function () {
         makeBet(100);
     });
@@ -15,30 +18,38 @@ window.addEventListener('load',function(){
     document.getElementById('betAll').addEventListener('click',function () {
         makeBet(1);
     });
-
 });
 
-const Card = function(cssClass,rank,suit,html){
+// Card object constructor
+const Card = function(cssClass,rank,suit){
     
     this.cssClass=cssClass;
     this.rank = rank;
     this.suit = suit;
+
+    // calculate numeric value of the card
+    const face = {'j':10,'q':10,'k':10,'a':11};
+    this.value = isNaN(rank) ?  face[rank] : parseInt(rank);
+    this.originalValue = isNaN(rank) ?  face[rank] : parseInt(rank);
+
+    // Aces are 11 by default
+    this.isSoft = false;
 }
 
-
+// Cards collection object
 const Cards = function () {
 
     // Holds the array of card objects
     this.deck = [];
     this.currentDeck= [];
 
-    // Initialize the user bank
+    // Initialize the user bank if it doesnt exist in the session
     let ss = sessionStorage.getItem("userBank");
     if (ss == "NaN" || ss === null) {
         sessionStorage.setItem("userBank", "1000");
     }
 
-    // User is broke
+    // User account is less than minimum wager
     if (parseInt(ss) < 100) {
         document.getElementById('draw').disabled = true;
         document.getElementById('stay').disabled = true;
@@ -46,50 +57,50 @@ const Cards = function () {
         document.getElementById('borrow').style.visibility='visible';
     }
 
-
     // Set the users available bank
     document.getElementById('bank').value = parseInt( sessionStorage.getItem("userBank"));
 
-    // Requirements for exercise  - create a deck of cards
+    // data for deck of cards
     const cards =['2','3','4','5','6','7','8','9','10','j','q','k','a'];
-    const face = {'j':10,'q':10,'k':10,'a':11};
     const suits = ['diams','hearts','spades','clubs'];
 
     // Create the complete deck of cards
     for(let s of suits){
         for(let c of cards){
-            let card = new Card();
-            card.cssClass = `card rank-${c} ${s}`;
-            card.rank = c;
-            card.suit = s;
-            card.value = isNaN(c) ?  face[c] : parseInt(c);
+            // Call the card constructor
+            let card = new Card(`card rank-${c} ${s}`,c,s);
+            // Add card to the complete deck
             this.deck.push(card);
         }
     }
 
-    // make a copy of the current deck to prevent reselection
+    // Copy the complete deck in the current deck to prevent reselection of a card within a game
     this.currentDeck = [...this.deck];
 
-    // Draw cards
+    // Deal a single card and remove from the current deck
     this.drawCard = function (target,total) {
 
         let pos = Math.floor(Math.random() * this.currentDeck.length-1);
         let card = this.currentDeck.splice(pos,1)[0];
 
-        // set ace to 1 or 11 based on the current total
+        // If the card is an Ace, set the default value to prevent player from losing
         if (card.rank=='a'){
             if (parseInt(document.getElementById(total).value) > 10){
                 card.value=1;
+                card.isSoft=true;
             }
         }
 
+        // Add the card to the page and update the score
         this.addCardToUI(target,card);
         document.getElementById(total).value = parseInt(document.getElementById(total).value) + card.value;
+
+        // Evaluate the value to see if its over 21
         checkValue(total);
     }
 
     // Initialize the game
-    this.dealerStart = function () {
+    this.startGame = function () {
 
         // Select a single card for the dealer
         let card = this.getRandomCard();
@@ -119,6 +130,10 @@ const Cards = function () {
 
         let hand = document.getElementById(target);
         let cardDiv = document.createElement('DIV');
+
+        // Bind datapoint to the
+        Object.assign(cardDiv,{value:card.value,rank:card.rank,suit:card.suit,isSoft:card.isSoft,originalValue:card.originalValue});
+
         cardDiv.setAttribute('class',card.cssClass);
 
         let cardRank =document.createElement('span');
@@ -130,6 +145,12 @@ const Cards = function () {
         cardSuit.setAttribute('class','suit');
         cardSuit.innerHTML=`&${card.suit};`;
         cardDiv.appendChild(cardSuit);
+
+        // add event listener that captures card value
+        cardDiv.addEventListener('click',function () {
+            changeAce(card);
+        });
+
         hand.appendChild(cardDiv);
     }
 }
@@ -151,7 +172,6 @@ const checkValue = function(target){
         if (target == 'userTotal') {
             document.getElementById('status').innerHTML = "Busted Fool";
             updateBank('lose');
-
         }
         else{
             document.getElementById('status').innerHTML ="Dealer busts, you win";
@@ -185,18 +205,18 @@ const showDealer = function () {
     stay.disabled=true;
     reDeal.style.visibility='visible';
 
-    // when dealer is finished, call the outcome to see who wins
-    outcome(parseInt( document.getElementById('dealerTotal').value), parseInt(document.getElementById('userTotal').value));
+    // when dealer is finished, call the determineWinner to see who wins
+    determineWinner(parseInt( document.getElementById('dealerTotal').value), parseInt(document.getElementById('userTotal').value));
 }
 
 // Identify the winner and call the updateBank method to update score
-const outcome = function (dealerTotal,playerTotal) {
+const determineWinner = function (dealerTotal, playerTotal) {
 
     if (playerTotal > dealerTotal || dealerTotal > 21) {
 
         // User has blackjack
         if (isBlackjack()){
-            document.getElementById('status').innerHTML = "Blackjack pays double";
+            document.getElementById('status').innerHTML = "Blackjack pays 3 to 2!";
             updateBank('bj');
         }
         // User just happened to win
@@ -265,7 +285,7 @@ const updateBank = function (status) {
 
     else if (status == 'bj'){
 
-        let newval = (bank  +  (wager*2)).toString();
+        let newval = (bank  +  (wager*1.5)).toString();
         sessionStorage.setItem("userBank", newval);
     }
     document.getElementById('bank').value = parseInt( sessionStorage.getItem('userBank'));
@@ -301,7 +321,7 @@ const deal = function () {
              node.parentNode.removeChild(node);
             }
 
-        cards.dealerStart();
+        cards.startGame();
         document.getElementById('draw').disabled = false;
         document.getElementById('deal').disabled = true;
         document.getElementById('stay').disabled = false;
@@ -343,6 +363,32 @@ const makeBet = function (amount) {
     document.getElementById('')
     document.getElementById('deal').disabled = false;
 }
+
+// Toggle the value of ace between 11 and 1
+const changeAce = function (card) {
+
+    let userCards = document.getElementById('bjCards').querySelectorAll('div.card');
+
+    let newSum = 0;
+    for(let i = 0;i<userCards.length;i++){
+        if ( userCards[i].rank == card.rank && userCards[i].suit == card.suit){
+            if (!userCards[i].isSoft) {
+                userCards[i].value = 1;
+                userCards[i].isSoft = true;
+                userCards[i].classList.add('soft');
+            }
+            else{
+                userCards[i].value = userCards[i].originalValue;
+                userCards[i].classList.remove('soft');
+                userCards[i].isSoft = false;
+
+            }
+        }
+        newSum += userCards[i].value;
+    }
+    document.getElementById('userTotal').value = newSum;
+}
+
 
 // create a new instance of a deck of cards
 var cards = new Cards();
