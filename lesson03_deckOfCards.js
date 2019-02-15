@@ -311,7 +311,7 @@ const dealerShouldDraw = function () {
     elem.parentNode.removeChild(elem);
 
     // Dealer hits <= 16 logig
-    while (parseInt(document.getElementById('dealerTotal').value) < 16 ) {
+    while (parseInt(document.getElementById('dealerTotal').value) <= 16 ) {
         cards.drawCard('bjDealer', 'dealerTotal');
     }
 
