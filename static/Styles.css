@@ -1,109 +1,64 @@
-.hide{
-    mso-foreground: #0000cc;
-}
-label{
-    color: white;
-    margin-top:5px;
+input {
+    border-radius: 10px;
+    border:1px solid #2aabd2;
+    padding: 5px;
 }
 
-.cardtray{
-
-    background: transparent;
-    border-radius:25px;
-    padding: 0px 5px 5px 5px;
-    margin: 5px;
+ul {
+    list-style-type: none;
+    overflow: auto;
 }
 
-.message{
-    color: white;
-    margin: 10px;
-    font-size: x-large;
+span:hover {
+    color: blue;
+    font-style: oblique;
+}
+.done{
+    text-decoration: none;
+    background-image: linear-gradient(transparent 7px,red 7px,red 9px,transparent 9px);
 }
 
-input{
-    border-radius: 25px;
-    width: 100px;
-    text-align:center;
-}
-.card-table {
-    background: url(../static/bj2.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-color: black;
-}
-.buttonGroup{
-    border:1px solid white;
-    margin: 20px;
-    padding: 5px 10px 5px 10px;
-    border-radius:25px;
-    background-color: #2aabd2;
-    align-content: center;
+.itemToday{
+
+    padding: 1px;
+    margin-bottom: 1px;
 }
 
-.soft{
-    border:3px solid yellow !important;
+.itemLater{
+
+    padding: 1px;
+    margin-bottom: 1px;
+}
+.add{
+    color:blue;
+}
+.minus{
+     color:red;
+ }
+
+.check{
+    color: green;
 }
 
-/* Tooltip for hovering over an ace*/
-.tooltip {
-    position: relative;
-    display: inline-block;
+.my-btn-group{
+    border:1px solid #8c8c8c;
+    border-radius:5px;
+    margin-right: 15px;
 }
 
-/* message to toggle the value */
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    z-index: 1;
+ul {
+    display: flex;
+    flex-direction: column;
 }
-
-.ace:hover {
-    border:3px solid #0000ff !important;
+ul li:first-child {
+    order: 5;
 }
-
-.tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
+ul li:nth-child(2) {
+    order: 4;
 }
-
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -60px;
-    opacity: 0;
-    transition: opacity 0.3s;
+ul li:nth-child(3) {
+    order: 3;
 }
-
-.tooltip .tooltiptext::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #555 transparent transparent transparent;
-}
-
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
+ul li:nth-child(4) {
+    order: 2;
 }
