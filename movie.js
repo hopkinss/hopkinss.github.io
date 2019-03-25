@@ -30,6 +30,7 @@ $(document).ready(function() {
 
 });
 
+var BASEURL='https://www.omdbapi.com';
 var recHolder = {page:1,pageOf:1,search:""};
 
 const PlotDataPoint = function (genre) {
@@ -89,7 +90,7 @@ const MovieDetails = function (title,poster,id,boxOffice,country,language,plot,r
 }
 
 const searchForMovies = function (s_val) {
-    let url  = `http://www.omdbapi.com/?s=${s_val}&type=movie&apikey=${APIKEY}`;
+    let url  = `${BASEURL}/?s=${s_val}&type=movie&apikey=${APIKEY}`;
     $("#nav-buttons").removeClass('hide');
 
 
@@ -147,7 +148,7 @@ const navigateCurrentMovies = function (e) {
 
     recHolder.page=toPage;
 
-    let url  = `http://www.omdbapi.com/?s=${recHolder.search}&type=movie&apikey=${APIKEY}&page=${toPage}`;
+    let url  = `${BASEURL}/?s=${recHolder.search}&type=movie&apikey=${APIKEY}&page=${toPage}`;
 
     $.ajax({
         url: url
@@ -192,7 +193,7 @@ const buildMovieList= function (list){
 }
 
 const getSelectedMovie = function (movie) {
-    const url  = `http://www.omdbapi.com/?i=${movie['id']}&plot=full&apikey=${APIKEY}`;
+    const url  = `${BASEURL}/?i=${movie['id']}&plot=full&apikey=${APIKEY}`;
 
     $.ajax({
         url: url
