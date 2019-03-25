@@ -13,10 +13,18 @@
 .post-header { margin-bottom: 30px; position: relative; }
 
 .head1 {
-    color:orangered;
+    color:#23527c;
     font-family: 'Helvetica Neue', sans-serif;
     font-size: x-large;
     padding: 0 0 10px;
+    font-family: Broadway;
+    border-bottom: double #555; }
+.head2 {
+    color:#23527c;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: larger;
+    padding: 0 0 10px;
+    font-family: Broadway;
     border-bottom: double #555; }
 
 .img{

@@ -255,6 +255,7 @@ const recordRating = function(e){
 
 const graphUserPref = function () {
 
+    $("#genre").removeClass('hide');
     let raw = localStorage.getItem('genres').split(',');
 
     let counts = [0,0,0,0,0,0,0];
@@ -285,21 +286,34 @@ const graphUserPref = function () {
     }
 
     new Chart(document.getElementById('plot').getContext('2d')).Doughnut(data);
-    makeLegend(colors,labels);
+    makeLegend(colors,labels,counts);
 }
 
-const makeLegend = function (colors, labels) {
+const makeLegend = function (colors, labels, counts) {
 
     let ul = document.getElementById('legend');
     while(ul.firstChild)
         ul.removeChild(ul.firstChild);
 
+    let maxPos=0,maxCount=0;
+
     for(let i = 0;i<colors.length;i++) {
 
-        let li=document.createElement('li');
-        li.innerHTML=labels[i];
-        li.setAttribute('style',`color:${colors[i]};`);
+        if (counts[i]> 0) {
 
-        ul.appendChild(li);
+            if (counts[i]>maxCount){
+                maxCount=counts[i];
+                maxPos=i;
+            }
+
+            let li = document.createElement('li');
+            li.innerHTML = labels[i];
+            li.setAttribute('class','btn')
+            li.setAttribute('style', `width:200px;color:white;font-weight:bold;background-color:${colors[i]};`);
+
+            ul.appendChild(li);
+        }
     }
+
+    $("#genre-title").html(`User Genre Preference: ${labels[maxPos]}`);
 }
