@@ -1,5 +1,5 @@
 .body{
-    background-image: url("bg.jpg");
+    background-color:w;
 }
 
 .no-display{
@@ -57,13 +57,13 @@
     display: inline-block;
     float:left;
     resize: none;
+    color: #23527c;
     outline: none;
     width: 100%;
     border: none;
     height: 100%;
     font-size: small;
     font-family: Verdana;
-    background-color: #d4d4d4;;
 }
 
 

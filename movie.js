@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+/*========================================================================
+| Requirement 1: Validate form field seach-movies
+|=========================================================================*/
     const formEl = document.getElementById('form-movies')
         .addEventListener('submit', function(e) {
 
@@ -26,13 +29,16 @@ $(document).ready(function() {
     })
 
     localStorage.setItem("genres","");
-
-
+    localStorage.setItem('count', "0");
 });
 
-var BASEURL='https://www.omdbapi.com';
+
 var recHolder = {page:1,pageOf:1,search:""};
 
+
+/*========================================================================
+| Requirement 2: Constructor with a prototype
+|=========================================================================*/
 const PlotDataPoint = function (genre) {
     this.genre = genre.trim();
 }
@@ -41,11 +47,9 @@ PlotDataPoint.prototype.getCategory  = function () {
 
     types =  [['Action',1], ['Adventure',1], ['Animation',2], ['Biography',3], ['Comedy',6], ['Crime',1],
                 ['Fantasy',3],['Documentary',3], ['Drama',4], ['Family',2],
-    ['History',3],['Horror',1], ['Music',5], ['Musical',5], ['Mystery',6], ['Romance',4],
-    ['Sci-Fi',3], ['Short',2], ['Sport',1], ['Thriller',1], ['War',1]];
-
+                ['History',3],['Horror',1], ['Music',5], ['Musical',5], ['Mystery',6], ['Romance',4],
+                ['Sci-Fi',3], ['Short',2], ['Sport',1], ['Thriller',1], ['War',1]];
     let fcat;
-
     for(let t of types){
         if (t[0] == this.genre){
             fcat=t[1];
@@ -89,6 +93,9 @@ const MovieDetails = function (title,poster,id,boxOffice,country,language,plot,r
 
 }
 
+/*========================================================================
+| Requirement 3: fetch request from a 3rd party API
+|=========================================================================*/
 const searchForMovies = function (s_val) {
     let url  = `${BASEURL}/?s=${s_val}&type=movie&apikey=${APIKEY}`;
     $("#nav-buttons").removeClass('hide');
@@ -238,19 +245,22 @@ const displaySelectedMovie = function (movie) {
 
 }
 
+/*========================================================================
+| Requirement 4: Updates/sets localStorage
+|=========================================================================*/
 const recordRating = function(e){
 
     if (sender=e.target.id == "isGood"){
 
         let genres = localStorage.getItem('genres');
-
+        let nmovies = (parseInt(localStorage.getItem('count')) + 1);
         genres  += `${genres.length>0 ? ",":""}${document.getElementById('td-genre').innerText}`;
         localStorage.setItem('genres',genres);
+        localStorage.setItem('count',nmovies.toString());
     }
 
     graphUserPref();
 }
-
 
 
 const graphUserPref = function () {
@@ -314,6 +324,8 @@ const makeLegend = function (colors, labels, counts) {
             ul.appendChild(li);
         }
     }
+    let n = localStorage.getItem('count');
+    $("#n").html(`N = ${n}`);
+    $("#genre-title").html(`User Genre Preference: ${labels[maxPos]} <i style="font-family: Arial;">out of ${n} movies reviewed</i>`);
 
-    $("#genre-title").html(`User Genre Preference: ${labels[maxPos]}`);
 }
