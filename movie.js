@@ -43,14 +43,15 @@ const PlotDataPoint = function (genre) {
     this.genre = genre.trim();
 }
 
+PlotDataPoint.prototype.typeMap=[['Action',1], ['Adventure',1], ['Animation',2], ['Biography',3], ['Comedy',6], ['Crime',1],
+    ['Fantasy',3],['Documentary',3], ['Drama',4], ['Family',2],
+    ['History',3],['Horror',1], ['Music',5], ['Musical',5], ['Mystery',6], ['Romance',4],
+    ['Sci-Fi',3], ['Short',2], ['Sport',1], ['Thriller',1], ['War',1]];
+
 PlotDataPoint.prototype.getCategory  = function () {
 
-    types =  [['Action',1], ['Adventure',1], ['Animation',2], ['Biography',3], ['Comedy',6], ['Crime',1],
-                ['Fantasy',3],['Documentary',3], ['Drama',4], ['Family',2],
-                ['History',3],['Horror',1], ['Music',5], ['Musical',5], ['Mystery',6], ['Romance',4],
-                ['Sci-Fi',3], ['Short',2], ['Sport',1], ['Thriller',1], ['War',1]];
     let fcat;
-    for(let t of types){
+    for(let t of this.typeMap){
         if (t[0] == this.genre){
             fcat=t[1];
         }
@@ -62,6 +63,7 @@ PlotDataPoint.prototype.getCategory  = function () {
         return 7;
     }
 }
+
 
 
 // Create a Movie object
@@ -127,6 +129,11 @@ const navigateCurrentMovies = function (e) {
 
     let btn = e.target.id.split('-')[1];
     let currPage=recHolder.page,lastPage=recHolder.pageOf;
+
+    if (currPage === undefined){
+        let x =1;
+    }
+
     let toPage;
     switch (btn) {
         case 'next':
@@ -176,8 +183,6 @@ const navigateCurrentMovies = function (e) {
     });
 }
 
-
-
 const buildMovieList= function (list){
     let ul = document.getElementById("list-movies");
 
@@ -212,11 +217,8 @@ const getSelectedMovie = function (movie) {
                 data['imdbRating'],data['Actors']);
 
             displaySelectedMovie(movieDetails);
-
         }
     });
-
-
 }
 
 
@@ -242,11 +244,10 @@ const displaySelectedMovie = function (movie) {
         range='N/A';
     }
     $('#td-score-value').html(range);
-
 }
 
 /*========================================================================
-| Requirement 4: Updates/sets localStorage
+| Requirement 4: read/set localStorage
 |=========================================================================*/
 const recordRating = function(e){
 
@@ -258,10 +259,8 @@ const recordRating = function(e){
         localStorage.setItem('genres',genres);
         localStorage.setItem('count',nmovies.toString());
     }
-
     graphUserPref();
 }
-
 
 const graphUserPref = function () {
 
@@ -269,6 +268,7 @@ const graphUserPref = function () {
     let raw = localStorage.getItem('genres').split(',');
 
     let counts = [0,0,0,0,0,0,0];
+
     for(let dp of raw){
         var p = new PlotDataPoint(dp);
         counts[p.getCategory()-1]++;
@@ -307,6 +307,8 @@ const makeLegend = function (colors, labels, counts) {
 
     let maxPos=0,maxCount=0;
 
+    let dp = new PlotDataPoint('unknown');
+
     for(let i = 0;i<colors.length;i++) {
 
         if (counts[i]> 0) {
@@ -318,14 +320,38 @@ const makeLegend = function (colors, labels, counts) {
 
             let li = document.createElement('li');
             li.innerHTML = labels[i];
-            li.setAttribute('class','btn')
-            li.setAttribute('style', `width:200px;color:white;font-weight:bold;background-color:${colors[i]};`);
+            li.setAttribute('class','btn');
 
+
+            // Add a title that includes all the genres that makeup a category
+            let title=[];
+            for(let t of dp.typeMap){
+                if (t[1] == i+1) {
+                    if (t[0] != undefined){
+                        title.push(t[0]);
+                    }
+                }
+            }
+
+            li.setAttribute('style', `width:200px;color:white;font-weight:bold;background-color:${colors[i]};`);
+            li.setAttribute('title',`This category includes the following genres: ${title.join(', ')}`);
             ul.appendChild(li);
         }
     }
+
+    let fav,favStyle;
+    if (counts.filter(i => i === maxCount).length>1){
+        fav="tied, rate more movies";
+        favStyle='style="background-color: #e8e8e8;"';
+    }
+
+    else{
+        fav=labels[maxPos];
+        favStyle=`style="background-color:${colors[maxPos]};"`;
+    }
+
     let n = localStorage.getItem('count');
     $("#n").html(`N = ${n}`);
-    $("#genre-title").html(`User Genre Preference: ${labels[maxPos]} <i style="font-family: Arial;">out of ${n} movies reviewed</i>`);
+    $("#genre-title").html(`User Genre Preference: <button class="btn" ${favStyle}>${fav}</button> <i style="font-family: Arial;">out of ${n} movies reviewed</i>`);
 
 }

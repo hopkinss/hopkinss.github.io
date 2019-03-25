@@ -190,6 +190,7 @@ li a {
 
 li:hover {
     color:blue;
+    font-style: normal;
 }
 
 .nav-arrow{
@@ -197,4 +198,8 @@ li:hover {
 }
 .rate-btn{
     border:1px solid red;
+}
+
+#list-movies{
+    padding-left: 10px;
 }
