@@ -239,11 +239,14 @@ const displaySelectedMovie = function (movie) {
     try{
        range = parseFloat(movie['rating']);
         $('#score-movie').val(range);
+        $('#score-movie').attr('readonly',true);
+        $('#score-movie').attr('disabled',true);
     }
     catch (e) {
         range='N/A';
     }
     $('#td-score-value').html(range);
+    $("#isGood").attr('disabled',false);
 }
 
 /*========================================================================
@@ -258,6 +261,9 @@ const recordRating = function(e){
         genres  += `${genres.length>0 ? ",":""}${document.getElementById('td-genre').innerText}`;
         localStorage.setItem('genres',genres);
         localStorage.setItem('count',nmovies.toString());
+
+        $(`#${e.target.id}`).attr('disabled',true);
+
     }
     graphUserPref();
 }
