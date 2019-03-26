@@ -46,7 +46,7 @@ const PlotDataPoint = function (genre) {
 PlotDataPoint.prototype.typeMap=[['Action',1], ['Adventure',1], ['Animation',2], ['Biography',3], ['Comedy',6], ['Crime',1],
     ['Fantasy',3],['Documentary',3], ['Drama',4], ['Family',2],
     ['History',3],['Horror',1], ['Music',5], ['Musical',5], ['Mystery',6], ['Romance',4],
-    ['Sci-Fi',3], ['Short',2], ['Sport',1], ['Thriller',1], ['War',1]];
+    ['Sci-Fi',3], ['Short',2], ['Sport',1], ['Thriller',1], ['War',1],['Western',1]];
 
 PlotDataPoint.prototype.getCategory  = function () {
 
